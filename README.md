@@ -53,16 +53,17 @@ Terraform will automatically create the necessary resources, such as the EKS clu
 aws eks --region <REGION> update-kubeconfig --name <CLUSTER_NAME>
 ```
 
-### 5. Apply the Kubernetes deployment files for Ollama and WebUI
+### 5. Check if the Node were created correctly:
+
+```
+kubectl get nodes
+```
+
+### 6. Apply the Kubernetes deployment files for Ollama and WebUI
 
 - For Ollama in ClusterIP:
 ```
 kubectl apply -f deployment-deepseek.yaml
-```
-
-- For Ollama in LoadBalancer:
-```
-kubectl apply -f deployment-deepseek-lb.yaml
 ```
 
 - For WebUI in ClusterIP:
@@ -70,15 +71,63 @@ kubectl apply -f deployment-deepseek-lb.yaml
 kubectl apply -f deployment-webui.yaml
 ```
 
+- For Ollama in LoadBalancer:
+```
+kubectl apply -f deployment-deepseek-lb.yaml
+```
+
 - For WebUI in LoadBalancer:
 ```
 kubectl apply -f deployment-webui-lb.yaml
 ```
 
-#### Check if the pods were created correctly:
+#### 6.1. Check if the pods were created correctly:
 ```
 kubectl get pods -n deepseek
 ```
+
+#### 6.2. Check if the services were created correctly:
+```
+kubectl get svc -n deepseek
+```
+
+### 7. Check if the load balancers are working correctly
+
+- For Ollama:
+```
+curl http://<External-IP>:11434
+```
+
+- For WebUI:
+```
+curl http://<External-IP>:8080
+```
+
+### 8. Run Ollama Model
+
+- Access the Ollama pod via bash to run the model:
+```
+kubectl exec -it <OLLAMA_POD_NAME> -- bash
+```
+
+- Acess the list of models:
+```
+ollama list  
+```
+
+- Run the desired model:
+```
+ollama run <MODEL_NAME>  
+```
+
+### 9. Open your WebUI in the browser, select your model, and enjoy!
+
+Just grab the external URL from your LoadBalancer service and paste it into the browser.
+
+![Screenshot 2025-03-03 at 09 30 50](https://github.com/user-attachments/assets/c049088e-962d-4900-96bd-4a9aa146afba)
+
+
+
 
 
 
