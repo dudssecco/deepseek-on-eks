@@ -32,8 +32,8 @@ cd deepseek-on-eks
 ### 2. Configure your AWS account
 
 ```
-aws_access_key = "SUA_ACCESS_KEY"
-aws_secret_key = "SUA_SECRET_KEY"
+aws_access_key = "YOUR_ACCESS_KEY"
+aws_secret_key = "YOUR_SECRET_KEY"
 region = "us-west-2"
 ```
 
