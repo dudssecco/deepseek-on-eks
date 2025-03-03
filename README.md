@@ -59,22 +59,18 @@ kubectl get nodes
 
 ### 6. Apply the Kubernetes deployment files for Ollama and WebUI
 
-- For Ollama in ClusterIP:
+- For Ollama and WebUI in ClusterIP:
 ```
 kubectl apply -f deployment-deepseek.yaml
 ```
-
-- For WebUI in ClusterIP:
 ```
 kubectl apply -f deployment-webui.yaml
 ```
 
-- For Ollama in LoadBalancer:
+- For Ollama and WebUI in LoadBalancer:
 ```
 kubectl apply -f deployment-deepseek-lb.yaml
 ```
-
-- For WebUI in LoadBalancer:
 ```
 kubectl apply -f deployment-webui-lb.yaml
 ```
