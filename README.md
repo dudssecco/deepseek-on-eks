@@ -1,7 +1,5 @@
 # Deepseek on EKS
 
-## Description
-
 This repository contains the infrastructure and configuration to run the Deepseek model on Kubernetes (EKS) using Ollama within pods. The project includes the configuration of the WebUI for a graphical interface, facilitating the management and monitoring of the model. The necessary instructions and files to reproduce the environment are documented and versioned for easy replication and scalability.
 
 ## Technologies 
