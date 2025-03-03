@@ -123,8 +123,7 @@ ollama run <MODEL_NAME>
 ### 9. Open your WebUI in the browser, select your model, and enjoy!
 
 Just grab the external URL from your LoadBalancer service and paste it into the browser.
-
-![Screenshot 2025-03-03 at 09 30 50](https://github.com/user-attachments/assets/c049088e-962d-4900-96bd-4a9aa146afba)
+![Screenshot 2025-03-03 at 14 08 05](https://github.com/user-attachments/assets/15a5b92f-1a1d-49cc-b312-0846bb970c35)
 
 
 
