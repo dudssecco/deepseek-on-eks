@@ -32,7 +32,7 @@ cd deepseek-on-eks
 ```
 aws_access_key = "YOUR_ACCESS_KEY"
 aws_secret_key = "YOUR_SECRET_KEY"
-region = "us-west-2"
+region = "YOUR_REGION"
 ```
 
 ### 3. Initialize terraform and apply the terraform plan to provision the infrastructure
@@ -117,6 +117,7 @@ ollama run <MODEL_NAME>
 ### 9. Open your WebUI in the browser, select your model, and enjoy!
 
 Just grab the external URL from your LoadBalancer service and paste it into the browser.
+
 ![Screenshot 2025-03-03 at 14 08 05](https://github.com/user-attachments/assets/15a5b92f-1a1d-49cc-b312-0846bb970c35)
 
 
