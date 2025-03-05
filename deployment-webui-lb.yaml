@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webui-lb
+  namespace: deepseek
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: webui-lb
+  template:
+    metadata:
+      labels:
+        app: webui-lb
+    spec:
+      containers:
+        - name: webui-lb
+          image: ghcr.io/open-webui/open-webui:0.5.16
+          ports:
+            - containerPort: 8080
+          env:
+            - name: OLLAMA_BASE_URL
+              value: "http://exemple.com" # Apontando para o Ollama LoadBalancer
+          volumeMounts:
+            - name: webui-data
+              mountPath: /app/data
+      volumes:
+        - name: webui-data
+          persistentVolumeClaim:
+            claimName: webui-pvc
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: webui-pvc
+  namespace: deepseek
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+      
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: webui-service-lb
+  namespace: deepseek
+spec:
+  selector:
+    app: webui-lb
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+  type: LoadBalancer

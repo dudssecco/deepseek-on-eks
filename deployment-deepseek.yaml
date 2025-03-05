@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deepseek-7b
+  namespace: deepseek
+spec:
+  replicas: 1  # Ajuste o número de réplicas conforme necessário
+  selector:
+    matchLabels:
+      app: deepseek-7b
+  template:
+    metadata:
+      labels:
+        app: deepseek-7b
+    spec:
+      containers:
+        - name: deepseek-7b
+          image: praveenrachamreddy/ollama-deepseek7b:latest  # Substitua com a sua imagem
+          ports:
+            - containerPort: 11434  # Porta que o DeepSeek estará expondo
+          resources:
+            limits:
+              memory: "16Gi"  # Memória limite
+              cpu: "4"         # Limite de CPUs
+            requests:
+              memory: "8Gi"    # Memória solicitada
+              cpu: "2"         # CPUs solicitadas
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: deepseek-service
+  namespace: deepseek
+spec:
+  selector:
+    app: deepseek-7b
+  ports:
+    - protocol: TCP
+      port: 11434         # A porta externa onde você acessará o serviço dentro do cluster
+      targetPort: 11434   # A porta onde o DeepSeek está escutando dentro do contêiner
+  type: ClusterIP  # Tipo alterado para ClusterIP
