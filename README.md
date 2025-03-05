@@ -27,6 +27,14 @@ git clone https://github.com/dudssecco/deepseek-on-eks/
 cd deepseek-on-eks
 ```
 
+#### Update the Terraform variables as needed:
+
+- cluster_name – Define the name of your EKS cluster.
+- bucket_name – Specify the S3 bucket name if required.
+- region – Choose the AWS region where the infrastructure will be deployed.
+- ssh-key – Set your SSH key for node access.
+
+
 ### 2. Configure your AWS account
 
 ```
