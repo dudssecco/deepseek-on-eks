@@ -20,10 +20,10 @@ spec:
             - containerPort: 8080
           env:
             - name: OLLAMA_BASE_URL
-              value: "http://exemple.com" # Apontando para o Ollama LoadBalancer
+              value: "http://<LOADBALANCER>:11434" # Apontando para o Ollama LoadBalancer
           volumeMounts:
             - name: webui-data
-              mountPath: /app/data
+              mountPath: /app/backend/data
       volumes:
         - name: webui-data
           persistentVolumeClaim:
