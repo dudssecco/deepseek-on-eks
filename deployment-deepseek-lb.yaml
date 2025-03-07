@@ -1,30 +1,33 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: deepseek-7b-lb
+  name: deepseek-1b-lb
   namespace: deepseek
 spec:
   replicas: 1  # Ajuste o número de réplicas conforme necessário
   selector:
     matchLabels:
-      app: deepseek-7b-lb
+      app: deepseek-1b-lb
   template:
     metadata:
       labels:
-        app: deepseek-7b-lb
+        app: deepseek-1b-lb
     spec:
       containers:
-        - name: deepseek-7b-lb
-          image: praveenrachamreddy/ollama-deepseek7b:latest  # Substitua com a sua imagem
+        - name: deepseek-1b-lb
+          image: ollama/ollama  # Substitua com a sua imagem
+          command: ["ollama", "run", "deepseek-r1:1.5b"]  # Substitua com a sua imagem
           ports:
             - containerPort: 11434  # Porta que o DeepSeek estará expondo
           resources:
             limits:
               memory: "16Gi"  # Memória limite
               cpu: "4"         # Limite de CPUs
+              nvidia.com/gpu: "1"   # Solicita 1 GPU
             requests:
               memory: "8Gi"    # Memória solicitada
               cpu: "2"         # CPUs solicitadas
+              nvidia.com/gpu: "1"   # Solicita 1 GPU
 
 ---
 
@@ -35,7 +38,7 @@ metadata:
   namespace: deepseek
 spec:
   selector:
-    app: deepseek-7b-lb
+    app: deepseek-1b-lb
   ports:
     - protocol: TCP
       port: 11434         # Porta exposta externamente
