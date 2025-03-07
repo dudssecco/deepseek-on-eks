@@ -83,12 +83,22 @@ kubectl apply -f deployment-deepseek-lb.yaml
 kubectl apply -f deployment-webui-lb.yaml
 ```
 
-#### 6.1. Check if the pods were created correctly:
+#### 6.1. Configure the environment variables:
+
+In the `deployment-webui-lb.yaml` file, don't forget to replace the `.env` environment variables with the URL of your Ollama API.
+```
+env:
+  - name: OLLAMA_BASE_URL
+  value: "https://<YOUR_URL_HERE>"
+```
+Your URL should be `http://<LOADBALANCER>:11434`
+
+#### 6.2. Check if the pods were created correctly:
 ```
 kubectl get pods -n deepseek
 ```
 
-#### 6.2. Check if the services were created correctly:
+#### 6.3. Check if the services were created correctly:
 ```
 kubectl get svc -n deepseek
 ```
