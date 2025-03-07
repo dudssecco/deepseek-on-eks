@@ -9,8 +9,8 @@ provider "aws" {
 
 terraform {
   backend "s3" {
-    bucket         = "deepseek-terraform"
-    key            = "deepseek-cluster.tfstate"  # Caminho do state dentro do bucket
+    bucket         = "mindset-terraform"
+    key            = "ml-cluster.tfstate"  # Caminho do state dentro do bucket
     region         = "us-east-2"
   }
 }
@@ -37,7 +37,7 @@ module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
   version = "5.8.1"
 
-  name = "deepseek-cluster"
+  name = "ml-cluster"
 
   cidr = "10.0.0.0/16"
   azs  = slice(data.aws_availability_zones.available.names, 0, 3)
@@ -56,19 +56,19 @@ module "vpc" {
   private_subnet_tags = {
     "kubernetes.io/role/internal-elb" = 1
   }
+
+  map_public_ip_on_launch = true
 }
 
 module "eks" {  
   source  = "terraform-aws-modules/eks/aws"
   version = "20.8.5"
 
-  cluster_name    = "deepseek-cluster"
+  cluster_name    = "ml-cluster"
   cluster_version = "1.29"
 
   cluster_endpoint_public_access           = true
   enable_cluster_creator_admin_permissions = true
-
-  
 
   cluster_addons = {
     aws-ebs-csi-driver = {
@@ -77,10 +77,10 @@ module "eks" {
   }
 
   vpc_id     = module.vpc.vpc_id
-  subnet_ids = module.vpc.private_subnets
+  subnet_ids = module.vpc.public_subnets
 
   eks_managed_node_group_defaults = {
-    ami_type = "AL2_x86_64"
+    ami_type = "AL2_x86_64_GPU"
     instance_types = ["g5.2xlarge"]
     disk_size = 200
   }
@@ -102,12 +102,21 @@ module "eks" {
       desired_size = 1  # Apenas um nó
 
       remote_access = {
-        ec2_ssh_key = "your-ssh-here"
+        ec2_ssh_key = "jorge2"
       }
     }
   }
 }
 
+# Criar um Elastic IP (EIP)
+resource "aws_eip" "eks_node_ip" {
+  domain = "vpc"  # Garantindo que o EIP será alocado no VPC
+}
+
+# Exemplo de Output para exibir o Elastic IP
+output "elastic_ip" {
+  value = aws_eip.eks_node_ip.public_ip
+}
 
 # https://aws.amazon.com/blogs/containers/amazon-ebs-csi-driver-is-now-generally-available-in-amazon-eks-add-ons/ 
 data "aws_iam_policy" "ebs_csi_policy" {
